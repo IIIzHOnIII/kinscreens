@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class AirConditioningInstallation extends StatelessWidget {
+  const AirConditioningInstallation({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,24 +11,10 @@ class HomeScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Perfil del usuario no definido aún"),
-              ),
-            );
+            Navigator.pop(context); // Vuelve hacia atrás
           },
-          icon: const Icon(Icons.person, color: Colors.black, size: 28),
+          icon: const Icon(Icons.arrow_back, color: Colors.black, size: 28),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Menú no definido aún")),
-              );
-            },
-            icon: const Icon(Icons.menu, color: Colors.black, size: 28),
-          ),
-        ],
       ),
       extendBodyBehindAppBar: true,
       body: Stack(
@@ -56,7 +42,7 @@ class HomeScreen extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(250),
         child: Image.asset(
-          'images/20945385.jpg',
+          'images/97826.jpg', // Nueva imagen asignada
           height: 250,
           fit: BoxFit.cover,
         ),
@@ -66,22 +52,14 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildContent(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        const SizedBox(height: 150), // Ajusta la posición del título
         _buildHeaderText(),
-        const SizedBox(height: 40),
-        _buildButton(context, Icons.electrical_services,
-            "INSTALACIONES ELÉCTRICAS", '/electric_services'),
-        const SizedBox(height: 20),
-        _buildButton(context, Icons.videocam, "CCTV (INSTALACIÓN DE SEGURIDAD)",
-            '/cctv_services'),
-        const SizedBox(height: 20),
-        _buildButton(context, Icons.ac_unit, "AIRE ACONDICIONADO",
-            '/air_conditioning_services'),
-        const SizedBox(height: 20),
-        _buildButton(
-            context, Icons.format_paint, "PINTURA", '/painting_services'),
-        const SizedBox(height: 70),
+        const SizedBox(height: 30), // Espaciado entre el título y botones
+        _buildButtons(context),
+        const SizedBox(
+            height: 50), // Espaciado final para balancear la pantalla
       ],
     );
   }
@@ -90,17 +68,17 @@ class HomeScreen extends StatelessWidget {
     return Column(
       children: [
         const Text(
-          "NECESITO UN SERVICIO...",
+          "INSTALACIÓN",
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 28,
+            fontSize: 26,
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),
         ),
         const SizedBox(height: 8),
         Container(
-          width: 220,
+          width: 150,
           height: 4,
           decoration: BoxDecoration(
             color: Colors.black,
@@ -118,10 +96,34 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildButtons(BuildContext context) {
+    return Column(
+      children: [
+        _buildButton(
+          context,
+          Icons.check_circle_outline,
+          'SÉ LO QUE NECESITO',
+          '/air_conditioning_maintenance_characteristics',
+        ),
+        const SizedBox(height: 20), // Espaciado entre botones
+        _buildButton(
+          context,
+          Icons.help_outline,
+          'NO SÉ LO QUE NECESITO\nSOLICITO ASESORÍA TÉCNICA',
+          '/need_consultation',
+        ),
+      ],
+    );
+  }
+
   Widget _buildButton(
-      BuildContext context, IconData icon, String label, String route) {
+    BuildContext context,
+    IconData icon,
+    String label,
+    String route,
+  ) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 40),
+      padding: const EdgeInsets.symmetric(horizontal: 30),
       child: ElevatedButton(
         onPressed: () {
           Navigator.pushNamed(context, route);
@@ -130,7 +132,7 @@ class HomeScreen extends StatelessWidget {
           backgroundColor: Colors.white,
           elevation: 6,
           shadowColor: Colors.grey.withOpacity(0.5),
-          padding: const EdgeInsets.symmetric(vertical: 20),
+          padding: const EdgeInsets.symmetric(vertical: 18),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
           ),
@@ -163,7 +165,11 @@ class GeometricBackgroundPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final gradientPaint = Paint()
       ..shader = const LinearGradient(
-        colors: [Colors.blueAccent, Colors.lightBlue, Colors.cyan],
+        colors: [
+          Color.fromARGB(255, 102, 103, 104),
+          Color.fromARGB(255, 189, 190, 191),
+          Color.fromARGB(255, 85, 92, 93)
+        ],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ).createShader(Rect.fromLTRB(0, 0, size.width, size.height));

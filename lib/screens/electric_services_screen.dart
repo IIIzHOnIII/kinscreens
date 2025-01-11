@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class ElectricServicesScreen extends StatelessWidget {
+  const ElectricServicesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,24 +11,10 @@ class HomeScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Perfil del usuario no definido aún"),
-              ),
-            );
+            Navigator.pop(context); // Vuelve hacia atrás
           },
-          icon: const Icon(Icons.person, color: Colors.black, size: 28),
+          icon: const Icon(Icons.arrow_back, color: Colors.black, size: 28),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Menú no definido aún")),
-              );
-            },
-            icon: const Icon(Icons.menu, color: Colors.black, size: 28),
-          ),
-        ],
       ),
       extendBodyBehindAppBar: true,
       body: Stack(
@@ -56,7 +42,7 @@ class HomeScreen extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(250),
         child: Image.asset(
-          'images/20945385.jpg',
+          'images/5156141.jpg',
           height: 250,
           fit: BoxFit.cover,
         ),
@@ -70,17 +56,14 @@ class HomeScreen extends StatelessWidget {
       children: [
         _buildHeaderText(),
         const SizedBox(height: 40),
+        _buildButton(context, Icons.build, 'MANTENIMIENTO ELÉCTRICO',
+            '/electric_maintenance'),
+        const SizedBox(height: 20),
         _buildButton(context, Icons.electrical_services,
-            "INSTALACIONES ELÉCTRICAS", '/electric_services'),
+            'INSTALACIÓN ELÉCTRICA', '/electric_installation'),
         const SizedBox(height: 20),
-        _buildButton(context, Icons.videocam, "CCTV (INSTALACIÓN DE SEGURIDAD)",
-            '/cctv_services'),
-        const SizedBox(height: 20),
-        _buildButton(context, Icons.ac_unit, "AIRE ACONDICIONADO",
-            '/air_conditioning_services'),
-        const SizedBox(height: 20),
-        _buildButton(
-            context, Icons.format_paint, "PINTURA", '/painting_services'),
+        _buildButton(context, Icons.lightbulb, 'ILUMINACIÓN ELÉCTRICA',
+            '/electric_lighting'),
         const SizedBox(height: 70),
       ],
     );
@@ -90,7 +73,7 @@ class HomeScreen extends StatelessWidget {
     return Column(
       children: [
         const Text(
-          "NECESITO UN SERVICIO...",
+          "INSTALACIONES ELÉCTRICAS",
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 28,

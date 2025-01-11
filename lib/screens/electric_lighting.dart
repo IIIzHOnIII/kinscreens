@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class ElectricLighting extends StatelessWidget {
+  const ElectricLighting({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,24 +11,10 @@ class HomeScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Perfil del usuario no definido aún"),
-              ),
-            );
+            Navigator.pop(context); // Vuelve a la pantalla anterior
           },
-          icon: const Icon(Icons.person, color: Colors.black, size: 28),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Menú no definido aún")),
-              );
-            },
-            icon: const Icon(Icons.menu, color: Colors.black, size: 28),
-          ),
-        ],
       ),
       extendBodyBehindAppBar: true,
       body: Stack(
@@ -56,7 +42,7 @@ class HomeScreen extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(250),
         child: Image.asset(
-          'images/20945385.jpg',
+          'images/25993.jpg', // Imagen para esta pantalla
           height: 250,
           fit: BoxFit.cover,
         ),
@@ -66,92 +52,47 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildContent(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        _buildHeaderText(),
-        const SizedBox(height: 40),
-        _buildButton(context, Icons.electrical_services,
-            "INSTALACIONES ELÉCTRICAS", '/electric_services'),
-        const SizedBox(height: 20),
-        _buildButton(context, Icons.videocam, "CCTV (INSTALACIÓN DE SEGURIDAD)",
-            '/cctv_services'),
-        const SizedBox(height: 20),
-        _buildButton(context, Icons.ac_unit, "AIRE ACONDICIONADO",
-            '/air_conditioning_services'),
-        const SizedBox(height: 20),
-        _buildButton(
-            context, Icons.format_paint, "PINTURA", '/painting_services'),
-        const SizedBox(height: 70),
-      ],
-    );
-  }
-
-  Widget _buildHeaderText() {
-    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Text(
-          "NECESITO UN SERVICIO...",
+          "INSTALACIÓN DE ILUMINACIÓN",
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 28,
+            fontSize: 24,
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),
         ),
-        const SizedBox(height: 8),
-        Container(
-          width: 220,
-          height: 4,
-          decoration: BoxDecoration(
-            color: Colors.black,
-            borderRadius: BorderRadius.circular(2),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black26,
-                offset: Offset(0, 2),
-                blurRadius: 4,
-              ),
-            ],
-          ),
-        ),
+        const SizedBox(height: 30),
+        _buildRequestButton(context),
       ],
     );
   }
 
-  Widget _buildButton(
-      BuildContext context, IconData icon, String label, String route) {
+  Widget _buildRequestButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40),
       child: ElevatedButton(
         onPressed: () {
-          Navigator.pushNamed(context, route);
+          Navigator.pushNamed(context, '/contact_form');
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.white,
           elevation: 6,
           shadowColor: Colors.grey.withOpacity(0.5),
-          padding: const EdgeInsets.symmetric(vertical: 20),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
           ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 32, color: Colors.blueAccent),
-            const SizedBox(width: 20),
-            Expanded(
-              child: Text(
-                label,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black87,
-                ),
-              ),
-            ),
-          ],
+        child: const Text(
+          "SOLICITO INSTALACIÓN-PRESUPUESTO",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
         ),
       ),
     );

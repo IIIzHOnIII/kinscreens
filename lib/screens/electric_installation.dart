@@ -1,50 +1,54 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class ElectricInstallation extends StatelessWidget {
+  const ElectricInstallation({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size; // Tamaño de la pantalla
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Perfil del usuario no definido aún"),
-              ),
-            );
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context); // Vuelve a la pantalla anterior
+            }
           },
-          icon: const Icon(Icons.person, color: Colors.black, size: 28),
+          icon: const Icon(Icons.arrow_back, color: Colors.black, size: 28),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Menú no definido aún")),
-              );
-            },
-            icon: const Icon(Icons.menu, color: Colors.black, size: 28),
-          ),
-        ],
       ),
       extendBodyBehindAppBar: true,
       body: Stack(
         children: [
-          _buildGeometricBackground(context),
-          _buildImageInWave(),
-          _buildContent(context),
+          _buildGeometricBackground(size), // Fondo geométrico
+          _buildContent(context, size), // Contenido principal
         ],
       ),
     );
   }
 
-  Widget _buildGeometricBackground(BuildContext context) {
+  Widget _buildGeometricBackground(Size size) {
     return CustomPaint(
       painter: GeometricBackgroundPainter(),
-      size: Size(MediaQuery.of(context).size.width, 250),
+      size: Size(size.width, size.height * 0.4), // Ajuste del fondo
+    );
+  }
+
+  Widget _buildContent(BuildContext context, Size size) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(height: size.height * 0.12), // Espaciado superior
+          _buildImageInWave(), // Imagen centrada arriba
+          const SizedBox(height: 20),
+          _buildHeaderText(), // Título con subrayado
+          const SizedBox(height: 30),
+          _buildRequestButton(context, size), // Botón con ícono
+        ],
+      ),
     );
   }
 
@@ -56,33 +60,11 @@ class HomeScreen extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(250),
         child: Image.asset(
-          'images/20945385.jpg',
-          height: 250,
+          'images/4140833.jpg', // Imagen para esta pantalla
+          height: 280,
           fit: BoxFit.cover,
         ),
       ),
-    );
-  }
-
-  Widget _buildContent(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        _buildHeaderText(),
-        const SizedBox(height: 40),
-        _buildButton(context, Icons.electrical_services,
-            "INSTALACIONES ELÉCTRICAS", '/electric_services'),
-        const SizedBox(height: 20),
-        _buildButton(context, Icons.videocam, "CCTV (INSTALACIÓN DE SEGURIDAD)",
-            '/cctv_services'),
-        const SizedBox(height: 20),
-        _buildButton(context, Icons.ac_unit, "AIRE ACONDICIONADO",
-            '/air_conditioning_services'),
-        const SizedBox(height: 20),
-        _buildButton(
-            context, Icons.format_paint, "PINTURA", '/painting_services'),
-        const SizedBox(height: 70),
-      ],
     );
   }
 
@@ -90,17 +72,17 @@ class HomeScreen extends StatelessWidget {
     return Column(
       children: [
         const Text(
-          "NECESITO UN SERVICIO...",
+          "INSTALACIÓN ELÉCTRICA",
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 28,
+            fontSize: 24,
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),
         ),
         const SizedBox(height: 8),
         Container(
-          width: 220,
+          width: 300,
           height: 4,
           decoration: BoxDecoration(
             color: Colors.black,
@@ -118,37 +100,41 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildButton(
-      BuildContext context, IconData icon, String label, String route) {
+  Widget _buildRequestButton(BuildContext context, Size size) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 40),
+      padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
       child: ElevatedButton(
         onPressed: () {
-          Navigator.pushNamed(context, route);
+          Navigator.pushNamed(context, '/contact_form');
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.white,
           elevation: 6,
           shadowColor: Colors.grey.withOpacity(0.5),
-          padding: const EdgeInsets.symmetric(vertical: 20),
+          padding: EdgeInsets.symmetric(
+            vertical: size.height * 0.02,
+            horizontal: size.width * 0.05,
+          ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25),
+            borderRadius: BorderRadius.circular(size.width * 0.05),
           ),
         ),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 32, color: Colors.blueAccent),
-            const SizedBox(width: 20),
-            Expanded(
-              child: Text(
-                label,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black87,
-                ),
+            Icon(
+              Icons.electrical_services, // Ícono representativo
+              size: 24,
+              color: Colors.blueAccent,
+            ),
+            SizedBox(width: 12),
+            Text(
+              "SOLICITO INSTALACIÓN-PRESUPUESTO",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
               ),
             ),
           ],
@@ -163,7 +149,11 @@ class GeometricBackgroundPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final gradientPaint = Paint()
       ..shader = const LinearGradient(
-        colors: [Colors.blueAccent, Colors.lightBlue, Colors.cyan],
+        colors: [
+          Color.fromARGB(255, 102, 103, 104),
+          Color.fromARGB(255, 189, 190, 191),
+          Color.fromARGB(255, 85, 92, 93)
+        ],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ).createShader(Rect.fromLTRB(0, 0, size.width, size.height));
@@ -188,9 +178,11 @@ class GeometricBackgroundPainter extends CustomPainter {
 
     final circlePath = Path()
       ..addOval(Rect.fromCircle(
-          center: Offset(size.width * 0.75, size.height * 0.5), radius: 50))
+          center: Offset(size.width * 0.75, size.height * 0.5),
+          radius: size.width * 0.1))
       ..addOval(Rect.fromCircle(
-          center: Offset(size.width * 0.25, size.height * 0.75), radius: 40));
+          center: Offset(size.width * 0.25, size.height * 0.75),
+          radius: size.width * 0.08));
 
     canvas.drawPath(path, gradientPaint);
     canvas.drawPath(circlePath, gradientPaint);
